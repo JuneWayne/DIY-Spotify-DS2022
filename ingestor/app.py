@@ -20,7 +20,7 @@ s3 = boto3.client('s3')
 
 # base URL for accessing the files
 ## UPDATE NEXT LINE
-baseurl = 'http://wkt7ne-dp1-spotify.s3-website-us-east-1.amazonaws.com'
+baseurl = 'http://wkt7ne-dp1-spotify.s3-website-us-east-1.amazonaws.com/'
 
 # database things
 DBHOST = os.getenv('DBHOST')
