@@ -45,11 +45,11 @@ def s3_handler(event):
     data = json.loads(text)
 
     # parse the data fields 1-by-1 from 'data'
-    TITLE = data['title']
-    ALBUM = data['album']
-    ARTIST = data['artist']
-    YEAR = data['year']
-    GENRE = data['genre']
+    TITLE = 'Cannon Ball'
+    ALBUM = 'O'
+    ARTIST = 'Damien Rice'
+    YEAR = 2002
+    GENRE = 2
 
     # get the unique ID for the bundle to build the mp3 and jpg urls
     # you get 5 data points in each new JSON file that arrives, but
@@ -59,13 +59,10 @@ def s3_handler(event):
     keyhead = event.key
     identifier = keyhead.split('.')
     ID = identifier[0]
-    MP3 = baseurl + ID + '/' + '.mp3'
-    IMG = baseurl + ID + '/' + '.jpg'
+    MP3 = baseurl + ID + '.mp3'
+    IMG = baseurl + ID + '.jpg'
    # MP3 = f"{baseurl}{ID}.mp3"
    # IMG = f"{baseurl}{ID}.jpg"
-
-
-
 
     app.log.debug("Received new song: %s, key: %s", event.bucket, event.key)
 

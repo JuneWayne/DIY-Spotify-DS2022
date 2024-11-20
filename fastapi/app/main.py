@@ -39,20 +39,18 @@ def get_genres():
 def get_songs():
     query = """
     SELECT 
-        songs.title AS title,
-        songs.album AS album,
-        songs.artist AS artist,
-        songs.year AS year,
-        CONCAT('https://nem2p-dp1-spotify.s3.us-east-1.amazonaws.com/', songs.file) AS file,
-        CONCAT('https://nem2p-dp1-spotify.s3.us-east-1.amazonaws.com/', songs.image) AS image,
+        songs.title AS title, 
+        songs.album AS album, 
+        songs.artist AS artist, 
+        songs.year AS year, 
+        songs.file AS file, 
+        songs.image AS image,
         genres.genre AS genre
     FROM 
         songs
     JOIN 
-        genres 
-    ON 
-        songs.genre = genres.genreid
-    ORDER BY 
+        genres ON songs.genre = genres.genreid
+    ORDER BY
         songs.title;
     """
     try:
