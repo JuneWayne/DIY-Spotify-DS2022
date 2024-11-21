@@ -7,16 +7,14 @@ from chalice import Chalice
 app = Chalice(app_name='ingestor')
 app.debug = True
 
-
 # Set the value of APP_BUCKET_NAME in the .chalice/config.json file.
 # S3_BUCKET = os.environ.get('APP_BUCKET_NAME', '')
 S3_BUCKET = 'wkt7ne-dp1-spotify'
 s3 = boto3.client('s3')
 
-#@app.on_s3_event(bucket=S3_BUCKET, events=['s3:ObjectCreated:*'])
-#def s3_handler(event):
-    #app.log.debug("Received event for bucket: %s, key: %s",
-                  #event.bucket, event.key)
+@app.on_s3_event(bucket=S3_BUCKET, events=['s3:ObjectCreated:*'])
+def s3_handler(event):
+    app.log.debug("Received event for bucket: %s, key: %s", event.bucket, event.key)
 
 # base URL for accessing the files
 ## UPDATE NEXT LINE
@@ -61,6 +59,7 @@ def s3_handler(event):
     ID = identifier[0]
     MP3 = baseurl + ID + '.mp3'
     IMG = baseurl + ID + '.jpg'
+    
    # MP3 = f"{baseurl}{ID}.mp3"
    # IMG = f"{baseurl}{ID}.jpg"
 
