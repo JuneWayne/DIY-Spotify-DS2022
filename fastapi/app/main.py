@@ -1,3 +1,4 @@
+/bin/python3 /home/ethancao/fastapi-demo/app/main.py
 #!/usr/bin/env python3
 import os
 import mysql.connector

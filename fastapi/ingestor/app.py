@@ -1,24 +1,35 @@
 import os
-import json
-import mysql.connector
-import boto3
+import chalice
 from chalice import Chalice
 
 app = Chalice(app_name='ingestor')
 app.debug = True
 
 # Set the value of APP_BUCKET_NAME in the .chalice/config.json file.
-# S3_BUCKET = os.environ.get('APP_BUCKET_NAME', '')
-S3_BUCKET = 'wkt7ne-dp1-spotify'
-s3 = boto3.client('s3')
+#S3_BUCKET = os.environ.get('APP_BUCKET_NAME', '')
+S3_BUCKET = 'esd4uq-dp1-spotify'
 
 @app.on_s3_event(bucket=S3_BUCKET, events=['s3:ObjectCreated:*'])
 def s3_handler(event):
     app.log.debug("Received event for bucket: %s, key: %s", event.bucket, event.key)
 
+import os
+import json
+import mysql.connector
+import boto3
+from chalice import Chalice
+
+app = Chalice(app_name='backend')
+app.debug = True
+
+# s3 things
+## UPDATE NEXT LINE
+S3_BUCKET = 'wkt7ne-dp1-spotify'
+s3 = boto3.client('s3')
+
 # base URL for accessing the files
 ## UPDATE NEXT LINE
-baseurl = 'http://wkt7ne-dp1-spotify.s3-website-us-east-1.amazonaws.com/'
+baseurl = 'http://esd4uq-dp1-spotify.s3-website-us-east-1.amazonaws.com'
 
 # database things
 DBHOST = os.getenv('DBHOST')
@@ -43,11 +54,11 @@ def s3_handler(event):
     data = json.loads(text)
 
     # parse the data fields 1-by-1 from 'data'
-    TITLE = 'Cannon Ball'
-    ALBUM = 'O'
-    ARTIST = 'Damien Rice'
-    YEAR = 2002
-    GENRE = 2
+    TITLE = data['title']
+    ALBUM = data['album']
+    ARTIST = data['artist']
+    YEAR = data['year']
+    GENRE = data['genre']
 
     # get the unique ID for the bundle to build the mp3 and jpg urls
     # you get 5 data points in each new JSON file that arrives, but
@@ -59,9 +70,6 @@ def s3_handler(event):
     ID = identifier[0]
     MP3 = baseurl + ID + '.mp3'
     IMG = baseurl + ID + '.jpg'
-    
-   # MP3 = f"{baseurl}{ID}.mp3"
-   # IMG = f"{baseurl}{ID}.jpg"
 
     app.log.debug("Received new song: %s, key: %s", event.bucket, event.key)
 
